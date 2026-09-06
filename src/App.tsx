@@ -97,7 +97,7 @@ export default function App() {
                   <div className="space-y-5">
                     <PrologueHero onStartJourney={() => openChapter(1)} />
                     <section className="mx-1 overflow-hidden rounded-[28px] border border-amber-500/25 bg-slate-950/88 shadow-xl">
-                      <FlatStoryIllustration chapterId={13} index={2} hero className="h-[170px] rounded-none border-0 border-b border-slate-200" />
+                      <FlatStoryIllustration chapterId={13} index={2} hero className="aspect-[3/2] rounded-none border-0 border-b border-slate-200" />
                       <div className="p-5 text-right">
                         <span className="text-xs font-black text-amber-400">نقشه راه تو</span>
                         <h2 className="mt-1.5 text-xl font-black leading-8 text-white">هر بار فقط یک قدم</h2>

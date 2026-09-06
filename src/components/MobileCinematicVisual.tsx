@@ -23,7 +23,7 @@ export const MobileCinematicVisual: React.FC<MobileCinematicVisualProps> = ({ ch
       className="mx-1 overflow-hidden rounded-3xl border bg-slate-950/82 p-3 shadow-xl"
       style={{ borderColor: `${theme.accent}40` }}
     >
-      <FlatStoryIllustration chapterId={chapter.id} index={0} hero className="h-[176px] w-full" />
+      <FlatStoryIllustration chapterId={chapter.id} index={0} hero className="aspect-[3/2] w-full" />
       <button
         type="button"
         onClick={() => setRevealed((value) => !value)}
@@ -49,4 +49,3 @@ export const MobileCinematicVisual: React.FC<MobileCinematicVisualProps> = ({ ch
     </motion.section>
   );
 };
-

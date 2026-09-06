@@ -78,7 +78,7 @@ export const PersonalJourneyWorkshop: React.FC<Props> = ({ progress, onUpdatePro
         </div>
 
         <section className="overflow-hidden rounded-[30px] border border-amber-500/25 bg-slate-950/90">
-          <FlatStoryIllustration chapterId={13} index={0} hero className="h-[180px] rounded-none border-0 border-b border-slate-200" />
+          <FlatStoryIllustration chapterId={13} index={0} hero className="aspect-[3/2] rounded-none border-0 border-b border-slate-200" />
           <div className="p-5">
             <div className="flex items-center justify-between">
               <span className="text-xs font-black text-amber-400">از ناخواسته تا اقدام روزانه</span>
@@ -121,7 +121,7 @@ export const PersonalJourneyWorkshop: React.FC<Props> = ({ progress, onUpdatePro
         </div>
 
         <section className="overflow-hidden rounded-[28px] border border-slate-800 bg-slate-950/92 shadow-xl">
-          <FlatStoryIllustration chapterId={chapterForStep[step - 1]} index={field} hero className="h-[160px] rounded-none border-0 border-b border-slate-200" />
+          <FlatStoryIllustration chapterId={chapterForStep[step - 1]} index={field} hero className="aspect-[3/2] rounded-none border-0 border-b border-slate-200" />
           <div className="p-4">
             <div className="flex items-center justify-between text-[10px]"><span className="font-black text-amber-400">پرسش {currentNumber} از {exercise.fields.length}</span><span className="text-slate-500">{Math.round(fieldProgress)}٪ این گام</span></div>
             <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-800"><motion.div initial={{ width: 0 }} animate={{ width: `${fieldProgress}%` }} className="h-full rounded-full bg-amber-400" /></div>

@@ -34,7 +34,7 @@ export const MobileProfileView: React.FC<Props> = ({ progress, onUpdateProgress,
   return (
     <div className="space-y-4 pb-6 text-right">
       <section className="overflow-hidden rounded-[30px] border border-amber-500/25 bg-slate-950/90">
-        <FlatStoryIllustration chapterId={13} index={4} hero className="h-[150px] rounded-none border-0 border-b border-slate-200" />
+        <FlatStoryIllustration chapterId={13} index={4} hero className="aspect-[3/2] rounded-none border-0 border-b border-slate-200" />
         <div className="p-4">
           <div className="flex items-center justify-between gap-3">
             {editing ? (

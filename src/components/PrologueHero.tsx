@@ -16,7 +16,7 @@ export const PrologueHero: React.FC<PrologueHeroProps> = ({ onStartJourney }) =>
     </motion.h1>
     <p className="mt-2 text-[15px] font-bold text-slate-300">از هدف قرضی تا مسیر واقعی خودت</p>
     <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .15 }} className="mt-7 w-full">
-      <FlatStoryIllustration chapterId={13} index={0} hero className="h-[190px] w-full shadow-2xl" />
+      <FlatStoryIllustration chapterId={1} special="prologue" hero className="aspect-[3/2] w-full shadow-2xl" />
     </motion.div>
     <p className="mx-auto mt-6 max-w-[330px] text-[13px] leading-7 text-slate-400">
       هر مرحله را بخوان، یک پاسخ واقعی بنویس و فقط وقتی آماده‌ای قدم بعدی را باز کن.
