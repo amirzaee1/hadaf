@@ -4,9 +4,13 @@ import { ArrowDown, Compass, Sparkles } from 'lucide-react';
 import { CinematicReveal } from './CinematicReveal';
 import { getEditorialImageSrc } from './FlatStoryIllustration';
 
-interface PrologueHeroProps { onStartJourney: () => void; }
+interface PrologueHeroProps {
+  onStartJourney: () => void;
+  resumeChapter?: number;
+  onResumeJourney?: () => void;
+}
 
-export const PrologueHero: React.FC<PrologueHeroProps> = ({ onStartJourney }) => (
+export const PrologueHero: React.FC<PrologueHeroProps> = ({ onStartJourney, resumeChapter, onResumeJourney }) => (
   <section className="relative z-10 flex min-h-[78vh] flex-col items-center justify-center px-3 py-10 text-center">
     <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-500/25 bg-amber-500/10 px-3 py-1.5 text-[11px] font-bold text-amber-300">
       <Sparkles className="h-3.5 w-3.5" />
@@ -34,8 +38,14 @@ export const PrologueHero: React.FC<PrologueHeroProps> = ({ onStartJourney }) =>
     </p>
     <button onClick={onStartJourney} className="mt-6 flex min-h-13 w-full max-w-[320px] items-center justify-center gap-2 rounded-2xl bg-gradient-to-l from-amber-400 to-orange-500 px-5 py-3.5 text-sm font-black text-slate-950 shadow-[0_15px_35px_rgba(245,158,11,.26)] active:scale-[.98]">
       <Compass className="h-5 w-5" />
-      <span>مرحله اول را شروع کن</span>
+      <span>از مرحلهٔ اول شروع کن</span>
       <ArrowDown className="h-4 w-4" />
     </button>
+    {resumeChapter && onResumeJourney && (
+      <button onClick={onResumeJourney} className="mt-2.5 flex min-h-11 w-full max-w-[320px] items-center justify-center gap-2 rounded-2xl border border-amber-500/25 bg-amber-500/[.07] px-4 text-xs font-bold text-amber-200">
+        <span>ادامه از مرحلهٔ {resumeChapter}</span>
+        <ArrowDown className="h-3.5 w-3.5" />
+      </button>
+    )}
   </section>
 );
