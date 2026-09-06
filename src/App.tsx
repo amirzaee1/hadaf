@@ -26,7 +26,7 @@ export default function App() {
   const initial = useMemo(() => loadUserProgress(), []);
   const [progress, setProgress] = useState<UserProgress>(initial);
   const [activeChapter, setActiveChapter] = useState(() => Math.min(13, Math.max(1, initial.currentChapter || 1)));
-  const [journeyStarted, setJourneyStarted] = useState(() => initial.completedChapters.length > 0 || initial.currentChapter > 1);
+  const [journeyStarted, setJourneyStarted] = useState(false);
   const [activeTab, setActiveTab] = useState<MobileTab>('journey');
 
   useEffect(() => saveUserProgress(progress), [progress]);
@@ -88,7 +88,7 @@ export default function App() {
     <div className="relative min-h-screen bg-[#03060f] text-slate-200 selection:bg-amber-500/30 selection:text-amber-100">
       <CinematicCanvas activeChapter={activeChapter} scrollProgress={0} />
       <div className="relative mx-auto flex min-h-screen w-full max-w-[430px] flex-col border-x border-slate-800/60 bg-[#050811]/96 shadow-[0_0_50px_rgba(0,0,0,.8)]">
-        <MobileTopBar currentChapter={activeChapter} totalChapters={CHAPTERS.length} habitStreak={progress.habitStreak || 0} onReset={resetProgress} onOpenMap={() => selectTab('map')} />
+        <MobileTopBar currentChapter={activeChapter} totalChapters={CHAPTERS.length} habitStreak={progress.habitStreak || 0} journeyStarted={journeyStarted} onReset={resetProgress} onOpenMap={() => selectTab('map')} />
 
         <div className="w-full flex-1 px-2.5 pt-3">
           <AnimatePresence mode="wait">
@@ -96,7 +96,11 @@ export default function App() {
               <motion.div key={`journey-${journeyStarted}-${activeChapter}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} className="w-full pb-28">
                 {!journeyStarted ? (
                   <div className="space-y-5">
-                    <PrologueHero onStartJourney={() => openChapter(1)} />
+                    <PrologueHero
+                      onStartJourney={() => openChapter(1)}
+                      resumeChapter={progress.currentChapter > 1 || progress.completedChapters.length > 0 ? activeChapter : undefined}
+                      onResumeJourney={() => openChapter(activeChapter)}
+                    />
                     <section className="mx-1 overflow-hidden rounded-[28px] border border-amber-500/25 bg-slate-950/88 shadow-xl">
                       <CinematicReveal
                         beforeSrc={getEditorialImageSrc(13, 0)}
