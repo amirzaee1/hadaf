@@ -111,8 +111,8 @@ export const EducationalBody: React.FC<EducationalBodyProps> = ({ chapter }) => 
               transition={{ duration: 0.45 }}
               className="group rounded-2xl border border-slate-800/90 bg-slate-900/55 p-2 shadow-[0_10px_28px_rgba(0,0,0,0.2)] transition-colors hover:border-amber-500/30"
             >
-              {index === 0 && <InfographicCardVisual chapterId={chapter.id} index={index} />}
-              <div className={`px-1.5 pb-1.5 ${index === 0 ? 'pt-3' : 'pt-1.5'}`}>
+              <InfographicCardVisual chapterId={chapter.id} index={index} />
+              <div className="px-1.5 pb-1.5 pt-3">
                 <div className="mb-2 flex items-center gap-1.5 text-[10px] font-extrabold tracking-wide text-amber-300/80">
                   <Sparkles className="h-3.5 w-3.5" />
                   <span>بخش {index + 1} از {blocks.length}</span>
