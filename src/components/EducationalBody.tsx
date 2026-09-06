@@ -33,6 +33,46 @@ export const EducationalBody: React.FC<EducationalBodyProps> = ({ chapter }) => 
     });
   };
 
+  const renderDialogueBlock = (block: string) =>
+    block.split('\n').map((line, lineIndex) => {
+      const trimmed = line.trim();
+
+      if (trimmed === 'تکلیف اجرایی') {
+        return (
+          <div key={lineIndex} className="my-4 rounded-2xl border border-amber-400/35 bg-amber-500/10 px-4 py-3 text-center text-base font-black text-amber-200">
+            تکلیف اجرایی
+          </div>
+        );
+      }
+
+      const isCoach = trimmed.startsWith('مربی:');
+      const isTeammate = trimmed.startsWith('هم‌تیمی:');
+      const speaker = isCoach ? 'مربی' : isTeammate ? 'هم‌تیمی' : '';
+      const dialogue = speaker ? trimmed.slice(trimmed.indexOf(':') + 1).trim() : trimmed;
+
+      return (
+        <div
+          key={lineIndex}
+          className={`rounded-2xl border px-3.5 py-3 ${
+            isCoach
+              ? 'border-amber-400/20 bg-amber-500/[0.07]'
+              : isTeammate
+                ? 'border-cyan-400/20 bg-cyan-500/[0.06]'
+                : 'border-slate-700/70 bg-slate-950/60'
+          }`}
+        >
+          {speaker && (
+            <span className={`mb-1.5 block text-[11px] font-black ${isCoach ? 'text-amber-300' : 'text-cyan-300'}`}>
+              {speaker}
+            </span>
+          )}
+          <p className="text-[15px] font-normal leading-8 text-slate-100 sm:text-[17px] sm:leading-9">
+            {renderHighlightedText(dialogue)}
+          </p>
+        </div>
+      );
+    });
+
   return (
     <div className="relative z-10 w-full px-3 sm:px-4 my-5">
       <motion.div
@@ -48,8 +88,8 @@ export const EducationalBody: React.FC<EducationalBodyProps> = ({ chapter }) => 
               <BookOpen className="w-4.5 h-4.5" />
             </span>
             <div>
-              <span className="block text-base sm:text-lg font-black tracking-tight">متن اصلی کارگاه</span>
-              <span className="block text-xs sm:text-sm text-slate-400 font-normal mt-1 leading-6">هر کارت، یک تصویر و یک بخش از مسیر.</span>
+              <span className="block text-base sm:text-lg font-black tracking-tight">سناریوی گفت‌وگو</span>
+              <span className="block text-xs sm:text-sm text-slate-400 font-normal mt-1 leading-6">بخوان، نقش‌ها را عوض کن و با هم‌تیمی‌ات تمرین کن.</span>
             </div>
           </div>
           <span className="text-xs text-slate-500 shrink-0">{blocks.length} بخش</span>
@@ -71,9 +111,7 @@ export const EducationalBody: React.FC<EducationalBodyProps> = ({ chapter }) => 
                   <Sparkles className="h-3.5 w-3.5" />
                   <span>بخش {index + 1} از {blocks.length}</span>
                 </div>
-                <p className="whitespace-pre-line text-[15px] sm:text-[17px] font-normal text-slate-200 leading-[2.05] sm:leading-[2.15] tracking-[-0.01em]">
-                  {renderHighlightedText(block)}
-                </p>
+                <div className="space-y-2.5">{renderDialogueBlock(block)}</div>
               </div>
             </motion.article>
           ))}
