@@ -153,7 +153,7 @@ export default function App() {
                       </button>
                       <ChapterHeader chapter={chapter} />
                       <MobileCinematicVisual chapter={chapter} progress={progress} onUpdateProgress={updateProgress} />
-                      <EducationalBody chapter={chapter} />
+                      <EducationalBody chapter={chapter} progress={progress} onUpdateProgress={updateProgress} />
                       <ReflectionBox chapter={chapter} progress={progress} onSaveReflection={saveReflection} onCompleteChapter={completeChapter} />
                       <ChapterTransition chapter={chapter} isLast={chapter.id === CHAPTERS.length} isCompleted={chapterCompleted} onNext={nextChapter} onOpenWorkshop={openWorkshop} />
                     </section>
