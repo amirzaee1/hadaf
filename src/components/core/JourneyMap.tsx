@@ -36,6 +36,7 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({ progress, activeChapter,
             const complete = progress.completedChapters.includes(chapter.id);
             const locked = chapter.id > unlockedThrough;
             const active = activeChapter === chapter.id;
+            const unanswered = complete && !(progress.reflections[chapter.id] || '').trim();
             const placeRight = index % 2 === 0;
 
             return (
@@ -53,14 +54,21 @@ export const JourneyMap: React.FC<JourneyMapProps> = ({ progress, activeChapter,
                   <span className={`mt-0.5 block text-[11px] font-bold leading-5 ${locked ? 'text-slate-700' : 'text-slate-200'}`}>
                     {chapter.titleFa}
                   </span>
+                  {unanswered && <span className="mt-0.5 block text-[9px] text-amber-500/70">دیده شد · بدون پاسخ</span>}
                 </div>
 
                 <motion.span
-                  className={`relative z-10 col-start-2 row-start-1 mx-auto flex h-10 w-10 items-center justify-center rounded-full border-2 ${complete ? 'border-emerald-300 bg-emerald-950 text-emerald-200' : active ? 'border-amber-200 bg-amber-400 text-slate-950 shadow-[0_0_30px_rgba(251,191,36,.46)]' : locked ? 'border-slate-800 bg-[#070b14] text-slate-700' : 'border-amber-500/55 bg-[#15130c] text-amber-300'}`}
+                  className={`relative z-10 col-start-2 row-start-1 mx-auto flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border-2 ${complete ? 'border-emerald-300 bg-emerald-950 text-emerald-200' : active ? 'border-amber-200 bg-amber-400 text-slate-950 shadow-[0_0_30px_rgba(251,191,36,.46)]' : locked ? 'border-slate-800 bg-[#070b14] text-slate-700' : 'border-amber-500/55 bg-[#15130c] text-amber-300'}`}
                   animate={active ? { scale: [1, 1.08, 1] } : undefined}
                   transition={{ duration: 2.1, repeat: Infinity }}
                 >
-                  {complete ? <Check className="h-4 w-4" /> : locked ? <Lock className="h-3.5 w-3.5" /> : <MapPin className="h-4 w-4" />}
+                  {locked ? <Lock className="h-3.5 w-3.5" /> : (
+                    <>
+                      <img src={getEditorialImageSrc(chapter.id, 0)} alt="" width="44" height="44" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+                      <span className={`absolute inset-0 ${active ? 'bg-amber-400/20' : 'bg-slate-950/25'}`} />
+                      {complete ? <Check className="relative h-4 w-4 rounded-full bg-emerald-950/85 p-0.5 text-emerald-200" /> : <MapPin className="relative h-4 w-4 rounded-full bg-slate-950/75 p-0.5 text-amber-200" />}
+                    </>
+                  )}
                 </motion.span>
               </button>
             );
