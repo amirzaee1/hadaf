@@ -57,11 +57,27 @@ export default function App() {
   };
 
   const nextChapter = () => {
-    if (!chapterCompleted || activeChapter >= CHAPTERS.length) return;
+    if (activeChapter >= CHAPTERS.length) return;
     const next = activeChapter + 1;
     setActiveChapter(next);
-    setProgress((prev) => ({ ...prev, currentChapter: next }));
+    setProgress((prev) => ({
+      ...prev,
+      currentChapter: next,
+      completedChapters: prev.completedChapters.includes(activeChapter)
+        ? prev.completedChapters
+        : [...prev.completedChapters, activeChapter],
+    }));
     setTimeout(scrollTop, 40);
+  };
+
+  const openWorkshop = () => {
+    setProgress((prev) => ({
+      ...prev,
+      completedChapters: prev.completedChapters.includes(activeChapter)
+        ? prev.completedChapters
+        : [...prev.completedChapters, activeChapter],
+    }));
+    selectTab('workshop');
   };
 
   const resetProgress = () => {
@@ -139,7 +155,7 @@ export default function App() {
                       <MobileCinematicVisual chapter={chapter} progress={progress} onUpdateProgress={updateProgress} />
                       <EducationalBody chapter={chapter} />
                       <ReflectionBox chapter={chapter} progress={progress} onSaveReflection={saveReflection} onCompleteChapter={completeChapter} />
-                      <ChapterTransition chapter={chapter} isLast={chapter.id === CHAPTERS.length} isCompleted={chapterCompleted} onNext={nextChapter} onOpenWorkshop={() => selectTab('workshop')} />
+                      <ChapterTransition chapter={chapter} isLast={chapter.id === CHAPTERS.length} isCompleted={chapterCompleted} onNext={nextChapter} onOpenWorkshop={openWorkshop} />
                     </section>
                   </main>
                 )}
