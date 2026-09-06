@@ -14,7 +14,7 @@ export const INITIAL_USER_PROGRESS: UserProgress = {
   fiveYearVision: { mind: '', health: '', career: '', wealth: '', relationships: '' },
   smartGoal: { specific: '', measurable: '', achievable: '', relevant: '', timeBound: '', burningWhy: '' },
   dailyRituals: { morningAction: '', twoMinuteRule: '', weeklyReviewDay: '', identityStatement: '' },
-  reflections: {}, workshopCompletedSteps: [], backpackStones: [],
+  reflections: {}, savedSentences: [], workshopCompletedSteps: [], backpackStones: [],
   futureVisionWorld: { location: '', occupation: '', companion: '', feeling: '' },
   deepWhyRoots: [], habitPathStones: [], habitStreak: 0,
   tripleReviews: {
@@ -34,6 +34,7 @@ export const loadUserProgress = (): UserProgress => {
       ...parsed,
       completedChapters: Array.isArray(parsed.completedChapters) ? parsed.completedChapters : [],
       reflections: parsed.reflections || {},
+      savedSentences: Array.isArray(parsed.savedSentences) ? parsed.savedSentences : [],
       workshopCompletedSteps: Array.isArray(parsed.workshopCompletedSteps) ? parsed.workshopCompletedSteps : [],
       fiveYearVision: { ...INITIAL_USER_PROGRESS.fiveYearVision, ...(parsed.fiveYearVision || {}) },
       smartGoal: { ...INITIAL_USER_PROGRESS.smartGoal, ...(parsed.smartGoal || {}) },
