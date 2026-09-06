@@ -180,6 +180,7 @@ export interface UserProgress {
 
   // Reflections for all chapters
   reflections: Record<number, string>;
+  savedSentences?: { chapterId: number; text: string }[];
 
   // PART 4: INTERACTIVE PERSONAL JOURNEY WORKSHOP
   workshopCompletedSteps?: number[];
