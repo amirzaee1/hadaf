@@ -5,9 +5,9 @@ import { BookOpen, Map, Sparkles, User } from 'lucide-react';
 export type MobileTab = 'journey' | 'workshop' | 'map' | 'profile';
 interface MobileTabBarProps { activeTab: MobileTab; onSelectTab: (tab: MobileTab) => void; completedChaptersCount: number; totalChaptersCount: number; habitStreak?: number; }
 
-export const MobileTabBar: React.FC<MobileTabBarProps> = ({ activeTab, onSelectTab, completedChaptersCount, totalChaptersCount }) => {
+export const MobileTabBar: React.FC<MobileTabBarProps> = ({ activeTab, onSelectTab, totalChaptersCount }) => {
   const tabs = [
-    { id: 'journey' as MobileTab, label: 'آموزش', icon: BookOpen, badge: `${completedChaptersCount}/${totalChaptersCount}` },
+    { id: 'journey' as MobileTab, label: 'آموزش', icon: BookOpen, badge: `${totalChaptersCount} مرحله` },
     { id: 'workshop' as MobileTab, label: 'تمرین', icon: Sparkles, badge: '۶ گام' },
     { id: 'map' as MobileTab, label: 'مسیر من', icon: Map },
     { id: 'profile' as MobileTab, label: 'نتیجه‌ها', icon: User },
@@ -32,4 +32,3 @@ export const MobileTabBar: React.FC<MobileTabBarProps> = ({ activeTab, onSelectT
     </nav>
   );
 };
-
