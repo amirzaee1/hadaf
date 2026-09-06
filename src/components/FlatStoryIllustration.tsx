@@ -25,17 +25,24 @@ const labels = [
   ['شروع کوچک برای هدف بزرگ', 'قطعه امروز', 'سه اقدام روزانه', 'مرور هفتگی', 'شروع فوری'],
 ];
 
-export const FlatStoryIllustration: React.FC<FlatStoryIllustrationProps> = ({ chapterId, index = 0, className = '', hero = false, special }) => {
+export const getEditorialImageSrc = (chapterId: number, index = 0, special?: 'prologue') => {
   const safeChapter = Math.min(13, Math.max(1, chapterId));
   const count = counts[safeChapter - 1];
   const safeIndex = ((index % count) + count) % count;
   const key = special || `c${String(safeChapter).padStart(2, '0')}-${String(safeIndex + 1).padStart(2, '0')}`;
+  return `./assets/goal-dream/editorial/${key}.webp`;
+};
+
+export const FlatStoryIllustration: React.FC<FlatStoryIllustrationProps> = ({ chapterId, index = 0, className = '', hero = false, special }) => {
+  const safeChapter = Math.min(13, Math.max(1, chapterId));
+  const count = counts[safeChapter - 1];
+  const safeIndex = ((index % count) + count) % count;
   const label = special === 'prologue' ? 'انتخاب مسیر شخصی به‌جای هدف‌های قرضی' : labels[safeChapter - 1][safeIndex];
 
   return (
     <figure className={`overflow-hidden rounded-2xl border border-slate-200/80 bg-[#faf9f5] ${className}`}>
       <img
-        src={`./assets/goal-dream/editorial/${key}.webp`}
+        src={getEditorialImageSrc(safeChapter, safeIndex, special)}
         alt={label}
         width="960"
         height="640"
