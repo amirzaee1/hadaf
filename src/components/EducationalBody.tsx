@@ -39,7 +39,7 @@ export const EducationalBody: React.FC<EducationalBodyProps> = ({ chapter }) => 
 
       if (trimmed === 'تکلیف اجرایی') {
         return (
-          <div key={lineIndex} className="my-4 rounded-2xl border border-amber-400/35 bg-amber-500/10 px-4 py-3 text-center text-base font-black text-amber-200">
+          <div key={lineIndex} className="my-3 rounded-xl border border-amber-400/35 bg-amber-500/10 px-3 py-2.5 text-center text-sm font-black text-amber-200">
             تکلیف اجرایی
           </div>
         );
@@ -53,7 +53,7 @@ export const EducationalBody: React.FC<EducationalBodyProps> = ({ chapter }) => 
       return (
         <div
           key={lineIndex}
-          className={`rounded-2xl border px-3.5 py-3 ${
+          className={`rounded-xl border px-3 py-2.5 ${
             isCoach
               ? 'border-amber-400/20 bg-amber-500/[0.07]'
               : isTeammate
@@ -61,20 +61,26 @@ export const EducationalBody: React.FC<EducationalBodyProps> = ({ chapter }) => 
                 : 'border-slate-700/70 bg-slate-950/60'
           }`}
         >
-          {speaker && (
-            <span className={`mb-1.5 block text-[11px] font-black ${isCoach ? 'text-amber-300' : 'text-cyan-300'}`}>
-              {speaker}
-            </span>
-          )}
-          <p className="text-[15px] font-normal leading-8 text-slate-100 sm:text-[17px] sm:leading-9">
-            {renderHighlightedText(dialogue)}
-          </p>
+          <div className="flex items-start gap-2.5">
+            {speaker && (
+              <span className={`mt-0.5 shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-black leading-5 ${
+                isCoach
+                  ? 'border-amber-400/20 bg-amber-400/10 text-amber-300'
+                  : 'border-cyan-400/20 bg-cyan-400/10 text-cyan-300'
+              }`}>
+                {speaker}
+              </span>
+            )}
+            <p className="min-w-0 text-[14px] font-normal leading-7 text-slate-100">
+              {renderHighlightedText(dialogue)}
+            </p>
+          </div>
         </div>
       );
     });
 
   return (
-    <div className="relative z-10 w-full px-3 sm:px-4 my-5">
+    <div className="relative z-10 my-4 w-full px-1.5">
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -82,20 +88,20 @@ export const EducationalBody: React.FC<EducationalBodyProps> = ({ chapter }) => 
         transition={{ duration: 0.6 }}
         className="rounded-3xl border border-white/10 bg-slate-950/80 shadow-2xl overflow-hidden"
       >
-        <div className="flex items-center justify-between gap-3 px-5 sm:px-7 py-5 border-b border-white/10 bg-white/[0.03]">
+        <div className="flex items-center justify-between gap-3 border-b border-white/10 bg-white/[0.03] px-4 py-3.5">
           <div className="flex items-center gap-2.5 text-amber-300 font-bold">
             <span className="w-9 h-9 rounded-xl bg-amber-500/15 flex items-center justify-center">
               <BookOpen className="w-4.5 h-4.5" />
             </span>
             <div>
-              <span className="block text-base sm:text-lg font-black tracking-tight">سناریوی گفت‌وگو</span>
-              <span className="block text-xs sm:text-sm text-slate-400 font-normal mt-1 leading-6">بخوان، نقش‌ها را عوض کن و با هم‌تیمی‌ات تمرین کن.</span>
+              <span className="block text-[15px] font-black tracking-tight">سناریوی گفت‌وگو</span>
+              <span className="mt-0.5 block text-[11px] font-normal leading-5 text-slate-400">بخوان، نقش‌ها را عوض کن و با هم‌تیمی‌ات تمرین کن.</span>
             </div>
           </div>
           <span className="text-xs text-slate-500 shrink-0">{blocks.length} بخش</span>
         </div>
 
-        <div className="p-4 sm:p-7 space-y-5 sm:space-y-7">
+        <div className="space-y-3 p-2.5">
           {blocks.map((block, index) => (
             <motion.article
               key={`${chapter.id}-${index}`}
@@ -103,15 +109,15 @@ export const EducationalBody: React.FC<EducationalBodyProps> = ({ chapter }) => 
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ duration: 0.45 }}
-              className="group rounded-[26px] border border-slate-800/90 bg-slate-900/55 p-3 sm:p-4 shadow-[0_14px_40px_rgba(0,0,0,0.22)] transition-colors hover:border-amber-500/30"
+              className="group rounded-2xl border border-slate-800/90 bg-slate-900/55 p-2 shadow-[0_10px_28px_rgba(0,0,0,0.2)] transition-colors hover:border-amber-500/30"
             >
-              <InfographicCardVisual chapterId={chapter.id} index={index} />
-              <div className="px-2 pb-2 pt-5 sm:px-3 sm:pb-3 sm:pt-6">
-                <div className="mb-3 flex items-center gap-2 text-[10px] font-extrabold tracking-wide text-amber-300/80">
+              {index === 0 && <InfographicCardVisual chapterId={chapter.id} index={index} />}
+              <div className={`px-1.5 pb-1.5 ${index === 0 ? 'pt-3' : 'pt-1.5'}`}>
+                <div className="mb-2 flex items-center gap-1.5 text-[10px] font-extrabold tracking-wide text-amber-300/80">
                   <Sparkles className="h-3.5 w-3.5" />
                   <span>بخش {index + 1} از {blocks.length}</span>
                 </div>
-                <div className="space-y-2.5">{renderDialogueBlock(block)}</div>
+                <div className="space-y-2">{renderDialogueBlock(block)}</div>
               </div>
             </motion.article>
           ))}

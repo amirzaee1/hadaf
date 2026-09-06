@@ -54,7 +54,7 @@ export const InfographicCardVisual: React.FC<InfographicCardVisualProps> = ({ ch
 
   return (
     <div
-      className="relative h-28 sm:h-32 w-full overflow-hidden rounded-2xl border border-white/10 bg-slate-950"
+      className="relative h-20 w-full overflow-hidden rounded-xl border border-white/10 bg-slate-950"
       role="img"
       aria-label={scene.label}
     >
@@ -81,20 +81,20 @@ export const InfographicCardVisual: React.FC<InfographicCardVisualProps> = ({ ch
         <path d="M0 160 Q140 115 265 157 T600 144 V180 H0 Z" fill="#ffffff" opacity="0.025" />
       </svg>
 
-      <div className="absolute right-5 top-1/2 -translate-y-1/2">
+      <div className="absolute right-4 top-1/2 -translate-y-1/2">
         <div
-          className="flex h-16 w-16 items-center justify-center rounded-[22px] border bg-slate-950/75 shadow-2xl backdrop-blur"
+          className="flex h-12 w-12 items-center justify-center rounded-2xl border bg-slate-950/75 shadow-2xl backdrop-blur"
           style={{ borderColor: `${scene.accent}75`, boxShadow: `0 0 35px ${scene.accent}28` }}
         >
-          <Icon className="h-8 w-8" style={{ color: scene.accent }} strokeWidth={1.7} />
+          <Icon className="h-6 w-6" style={{ color: scene.accent }} strokeWidth={1.7} />
         </div>
       </div>
 
-      <div className="absolute left-4 top-4 flex items-center gap-1.5 text-[10px] font-bold text-slate-400">
+      <div className="absolute left-3 top-3 flex items-center gap-1.5 text-[10px] font-bold text-slate-400">
         <Sparkles className="h-3.5 w-3.5 text-amber-300" />
         <span>{scene.label}</span>
       </div>
-      <span className="absolute bottom-3 left-4 font-mono text-[10px] text-slate-600">
+      <span className="absolute bottom-2 left-3 font-mono text-[9px] text-slate-600">
         {String(index + 1).padStart(2, '0')}
       </span>
     </div>

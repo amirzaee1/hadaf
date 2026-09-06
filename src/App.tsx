@@ -120,7 +120,7 @@ export default function App() {
         />
 
         {/* View Switcher based on Active Mobile Tab */}
-        <div className="flex-1 w-full px-2.5 sm:px-3 pt-3">
+        <div className="w-full flex-1 px-2.5 pt-3">
           <AnimatePresence mode="wait">
             {activeTab === 'journey' && (
               <motion.div
@@ -129,12 +129,12 @@ export default function App() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
-                className="w-full space-y-12 sm:space-y-16 pb-28"
+                className="w-full space-y-10 pb-24"
               >
                 {/* Hero Prologue Scene */}
                 <PrologueHero onStartJourney={() => scrollToChapter(1)} />
 
-                <section className="mx-3 sm:mx-4 -mt-6 rounded-3xl overflow-hidden border border-amber-500/20 bg-slate-950/85 shadow-2xl">
+                <section className="mx-2 -mt-6 overflow-hidden rounded-3xl border border-amber-500/20 bg-slate-950/85 shadow-2xl">
                   <div className="grid grid-cols-1 lg:grid-cols-[1.25fr_.75fr] items-center">
                     <img
                       src="./assets/goal-dream/journey-isometric.webp"
@@ -144,10 +144,10 @@ export default function App() {
                       height="1024"
                       loading="lazy"
                     />
-                    <div className="p-5 sm:p-7 text-right">
+                    <div className="p-5 text-right">
                       <span className="text-xs font-bold text-amber-400">نقشه راه تو</span>
-                      <h2 className="text-xl sm:text-2xl font-black text-white mt-2 leading-9">فقط یک قدم را در هر لحظه انجام بده</h2>
-                      <div className="mt-4 space-y-3 text-sm sm:text-base text-slate-300 leading-7">
+                      <h2 className="mt-2 text-xl font-black leading-8 text-white">فقط یک قدم را در هر لحظه انجام بده</h2>
+                      <div className="mt-4 space-y-3 text-sm leading-7 text-slate-300">
                         <p><strong className="text-amber-200">۱.</strong> متن هر مرحله را آرام بخوان.</p>
                         <p><strong className="text-amber-200">۲.</strong> پاسخ خودت را همان‌جا بنویس.</p>
                         <p><strong className="text-amber-200">۳.</strong> در پایان، تمرین شش‌گانه را کامل کن.</p>
@@ -157,7 +157,7 @@ export default function App() {
                 </section>
 
                 {/* 13 CHAPTERS IN STRICT EDUCATIONAL ORDER */}
-                <main className="space-y-16 sm:space-y-24">
+                <main className="space-y-12">
                   {CHAPTERS.map((chapter) => {
                     const theme = getChapterTheme(chapter.id);
                     return (

@@ -51,8 +51,8 @@ export const MobileTabBar: React.FC<MobileTabBarProps> = ({
       aria-label="Mobile Navigation"
       className="fixed bottom-0 left-0 right-0 z-50 flex justify-center pointer-events-none pb-[env(safe-area-inset-bottom,8px)]"
     >
-      <div className="w-full max-w-[430px] px-3 pb-2 pointer-events-auto">
-        <div className="flex items-center justify-around py-2 px-1 rounded-2xl bg-slate-950/90 border border-amber-500/25 backdrop-blur-2xl shadow-[0_-5px_25px_rgba(0,0,0,0.7)]">
+      <div className="pointer-events-auto w-full max-w-[430px] px-2 pb-1.5">
+        <div className="flex items-center justify-around rounded-2xl border border-amber-500/25 bg-slate-950/90 px-1 py-1.5 shadow-[0_-5px_25px_rgba(0,0,0,0.7)] backdrop-blur-2xl">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -64,7 +64,7 @@ export const MobileTabBar: React.FC<MobileTabBarProps> = ({
                   soundEngine.playTick();
                   onSelectTab(tab.id);
                 }}
-                className={`relative flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all duration-200 min-w-[68px] min-h-[44px] ${
+                className={`relative flex min-h-[40px] min-w-[64px] flex-col items-center justify-center rounded-xl px-2.5 py-1 transition-all duration-200 ${
                   isActive
                     ? 'text-amber-300 font-black'
                     : 'text-slate-400 hover:text-slate-200 font-medium'

@@ -11,14 +11,14 @@ interface ChapterHeaderProps {
 export const ChapterHeader: React.FC<ChapterHeaderProps> = ({ chapter }) => {
   const theme = getChapterTheme(chapter.id);
   return (
-    <div className="relative z-10 text-center w-full px-4 pt-10 pb-4">
+    <div className="relative z-10 w-full px-3 pb-3 pt-7 text-center">
       {/* Top: Small chapter indicator */}
       <motion.div
         initial={{ opacity: 0, y: -15 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-50px' }}
         transition={{ duration: 0.7 }}
-        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-xs font-medium tracking-wide mb-5 backdrop-blur-md"
+        className="mb-3.5 inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] font-medium tracking-wide backdrop-blur-md"
         style={{ color: theme.accentSoft, borderColor: `${theme.accent}55`, background: theme.surface }}
       >
         <Compass className="w-3.5 h-3.5 animate-spin-slow" style={{ color: theme.accent }} />
@@ -33,11 +33,11 @@ export const ChapterHeader: React.FC<ChapterHeaderProps> = ({ chapter }) => {
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true, margin: '-50px' }}
         transition={{ duration: 0.8, delay: 0.1 }}
-        className="my-3 py-6 sm:py-8 px-4 sm:px-7 rounded-[28px] border relative overflow-hidden"
+        className="relative my-2 overflow-hidden rounded-[22px] border px-3 py-5"
         style={{ borderColor: `${theme.accent}42`, background: `radial-gradient(circle at 50% 0%, ${theme.glow}, transparent 62%)` }}
       >
         <div className="absolute inset-x-12 top-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${theme.accent}, transparent)` }} />
-        <h2 className="display-type text-[26px] sm:text-[34px] font-black leading-[1.65] tracking-[-0.035em]" style={{ color: theme.accentSoft, textShadow: `0 0 32px ${theme.glow}` }}>
+        <h2 className="display-type text-[24px] font-black leading-[1.55] tracking-[-0.035em]" style={{ color: theme.accentSoft, textShadow: `0 0 32px ${theme.glow}` }}>
           «{chapter.cinematic_headline || chapter.level1Quote}»
         </h2>
       </motion.div>

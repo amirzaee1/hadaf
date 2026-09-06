@@ -101,10 +101,10 @@ export const MobileCinematicVisual: React.FC<MobileCinematicVisualProps> = ({
   };
 
   return (
-    <div className="w-full relative my-6 select-none">
+    <div className="relative my-4 w-full select-none">
       {/* Visual Frame Container */}
       <div
-        className="relative w-full rounded-[30px] overflow-hidden border shadow-[0_18px_50px_rgba(0,0,0,0.65)] p-4 sm:p-6 min-h-[340px] flex flex-col items-center justify-center text-center"
+        className="relative flex min-h-[310px] w-full flex-col items-center justify-center overflow-hidden rounded-[24px] border p-4 text-center shadow-[0_14px_40px_rgba(0,0,0,0.58)]"
         style={{ borderColor: `${theme.accent}45`, background: `linear-gradient(180deg, ${theme.surface}, #091124 45%, #050811)` }}
       >
         
