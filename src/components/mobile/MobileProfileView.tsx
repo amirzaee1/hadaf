@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CheckCircle2, Download, Edit3, FileText, RotateCcw, Save, Sparkles, Upload } from 'lucide-react';
+import { Bookmark, CheckCircle2, Download, Edit3, FileText, RotateCcw, Save, Sparkles, Upload, X } from 'lucide-react';
 import { UserProgress } from '../../types';
 import { PDF_WORKSHOP_EXERCISES } from '../../data/pdfWorkshopExercises';
 import { exportUserDataJSON, importUserDataJSON } from '../../utils/storage';
@@ -19,6 +19,7 @@ export const MobileProfileView: React.FC<Props> = ({ progress, onUpdateProgress,
   const [name, setName] = useState(progress.userName || 'مسافر مسیر');
   const [error, setError] = useState('');
   const completed = progress.workshopCompletedSteps || [];
+  const savedSentences = progress.savedSentences || [];
   const journeyPercent = Math.round((progress.completedChapters.length / 13) * 100);
 
   const saveName = () => {
@@ -47,6 +48,27 @@ export const MobileProfileView: React.FC<Props> = ({ progress, onUpdateProgress,
           <div className="mt-4 grid grid-cols-2 gap-2 text-center"><div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-3"><strong className="block text-lg text-white">{progress.completedChapters.length}/۱۳</strong><span className="text-[10px] text-slate-500">مرحله آموزشی</span></div><div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-3"><strong className="block text-lg text-white">{completed.length}/۶</strong><span className="text-[10px] text-slate-500">گام کارگاه</span></div></div>
         </div>
       </section>
+
+      {savedSentences.length > 0 && (
+        <section className="rounded-[26px] border border-amber-500/20 bg-slate-950/88 p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-sm font-black text-white"><Bookmark className="h-4 w-4 text-amber-300" fill="currentColor" /><span>جمله‌های من</span></div>
+            <span className="text-[10px] text-slate-500">{savedSentences.length} جمله</span>
+          </div>
+          <div className="mt-3 space-y-2">
+            {savedSentences.map((item, index) => (
+              <div key={`${item.chapterId}-${item.text}-${index}`} className="flex items-start gap-2 rounded-2xl border border-slate-800 bg-slate-900/65 p-3">
+                <div className="min-w-0 flex-1"><span className="block text-[9px] font-black text-amber-400">مرحله {item.chapterId}</span><p className="mt-1 text-[12px] leading-6 text-slate-200">{item.text}</p></div>
+                <button
+                  onClick={() => onUpdateProgress((prev) => ({ ...prev, savedSentences: (prev.savedSentences || []).filter((saved) => !(saved.chapterId === item.chapterId && saved.text === item.text)) }))}
+                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-800 text-slate-500"
+                  aria-label="حذف جمله"
+                ><X className="h-3.5 w-3.5" /></button>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {sections.length === 0 ? (
         <section className="rounded-[28px] border border-dashed border-slate-700 bg-slate-950/75 p-6 text-center"><FileText className="mx-auto h-8 w-8 text-slate-600" /><h2 className="mt-3 text-base font-black text-white">این صفحه با پاسخ‌های تو ساخته می‌شود</h2><p className="mt-2 text-xs leading-6 text-slate-400">هنوز نمونه‌ی ساختگی نشان نمی‌دهیم؛ هر چیزی که اینجا می‌بینی واقعاً نوشته‌ی خودت خواهد بود.</p><button onClick={onOpenWorkshop} className="mt-4 flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-amber-400 text-sm font-black text-slate-950"><Sparkles className="h-4 w-4" /> شروع کارگاه</button></section>
