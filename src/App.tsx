@@ -15,7 +15,8 @@ import { MobileTopBar } from './components/mobile/MobileTopBar';
 import { MobileTabBar, MobileTab } from './components/mobile/MobileTabBar';
 import { MobileProfileView } from './components/mobile/MobileProfileView';
 import { JourneyMap } from './components/core/JourneyMap';
-import { FlatStoryIllustration } from './components/FlatStoryIllustration';
+import { getEditorialImageSrc } from './components/FlatStoryIllustration';
+import { CinematicReveal } from './components/CinematicReveal';
 import { loadUserProgress, saveUserProgress, INITIAL_USER_PROGRESS } from './utils/storage';
 import { getChapterTheme } from './utils/chapterTheme';
 
@@ -97,7 +98,19 @@ export default function App() {
                   <div className="space-y-5">
                     <PrologueHero onStartJourney={() => openChapter(1)} />
                     <section className="mx-1 overflow-hidden rounded-[28px] border border-amber-500/25 bg-slate-950/88 shadow-xl">
-                      <FlatStoryIllustration chapterId={13} index={2} hero className="aspect-[3/2] rounded-none border-0 border-b border-slate-200" />
+                      <CinematicReveal
+                        beforeSrc={getEditorialImageSrc(13, 0)}
+                        afterSrc={getEditorialImageSrc(13, 2)}
+                        beforeAlt="مسیر بلند هدف"
+                        afterAlt="سه قدم روشن روزانه"
+                        eyebrow="نقشهٔ راه تو"
+                        title="کوه را نبین؛ قدم بعد را ببین"
+                        instruction="تصویر را لمس کن تا مسیر به سه حرکت ساده تبدیل شود."
+                        result="بخوان، پاسخ بده و فقط با انتخاب خودت مرحلهٔ بعد را باز کن."
+                        accent="#fbbf24"
+                        compact
+                        className="rounded-none border-0 border-b border-white/10"
+                      />
                       <div className="p-5 text-right">
                         <span className="text-xs font-black text-amber-400">نقشه راه تو</span>
                         <h2 className="mt-1.5 text-xl font-black leading-8 text-white">هر بار فقط یک قدم</h2>
