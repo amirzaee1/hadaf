@@ -14,6 +14,7 @@ import { ChapterHeader } from './components/ChapterHeader';
 import { MobileCinematicVisual } from './components/MobileCinematicVisual';
 import { EducationalBody } from './components/EducationalBody';
 import { ReflectionBox } from './components/ReflectionBox';
+import { ChapterTransition } from './components/ChapterTransition';
 import { DossierModal } from './components/DossierModal';
 import { PersonalJourneyWorkshop } from './components/workshop/PersonalJourneyWorkshop';
 import { MobileTopBar } from './components/mobile/MobileTopBar';
@@ -24,6 +25,7 @@ import { loadUserProgress, saveUserProgress, INITIAL_USER_PROGRESS } from './uti
 import { motion, AnimatePresence } from 'motion/react';
 import { Award, Sparkles, ArrowUp } from 'lucide-react';
 import { soundEngine } from './utils/audio';
+import { getChapterTheme } from './utils/chapterTheme';
 
 export default function App() {
   const [progress, setProgress] = useState<UserProgress>(() => loadUserProgress());
@@ -135,7 +137,7 @@ export default function App() {
                 <section className="mx-3 sm:mx-4 -mt-6 rounded-3xl overflow-hidden border border-amber-500/20 bg-slate-950/85 shadow-2xl">
                   <div className="grid grid-cols-1 lg:grid-cols-[1.25fr_.75fr] items-center">
                     <img
-                      src="/assets/goal-dream/journey-isometric.webp"
+                      src="./assets/goal-dream/journey-isometric.webp"
                       alt="نقشه تصویری مسیر هدف‌گذاری"
                       className="w-full h-auto object-contain bg-gradient-to-b from-emerald-950/20 to-transparent"
                       width="1536"
@@ -157,12 +159,19 @@ export default function App() {
                 {/* 13 CHAPTERS IN STRICT EDUCATIONAL ORDER */}
                 <main className="space-y-16 sm:space-y-24">
                   {CHAPTERS.map((chapter) => {
+                    const theme = getChapterTheme(chapter.id);
                     return (
                       <section
                         key={chapter.id}
                         ref={(el) => (chapterRefs.current[chapter.id] = el)}
                         id={`chapter-${chapter.id}`}
-                        className="relative min-h-[70vh] flex flex-col justify-center scroll-mt-20 py-2"
+                        className="chapter-journey relative min-h-[70vh] flex flex-col justify-center scroll-mt-20 py-7 rounded-[34px]"
+                        style={{
+                          '--chapter-accent': theme.accent,
+                          '--chapter-accent-soft': theme.accentSoft,
+                          '--chapter-glow': theme.glow,
+                          '--chapter-surface': theme.surface,
+                        } as React.CSSProperties}
                       >
                         {/* Dividing Beam */}
                         <div className="w-32 mx-auto h-[1px] bg-gradient-to-r from-transparent via-amber-500/40 to-transparent mb-4" />
@@ -189,6 +198,8 @@ export default function App() {
                           onSaveReflection={handleSaveReflection}
                           onCompleteChapter={handleCompleteChapter}
                         />
+
+                        <ChapterTransition chapter={chapter} isLast={chapter.id === CHAPTERS.length} />
                       </section>
                     );
                   })}

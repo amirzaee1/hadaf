@@ -11,6 +11,16 @@
   body {
     min-width: 320px;
     overflow-x: hidden;
+    font-feature-settings: "kern" 1, "ss01" 1;
+    letter-spacing: -0.012em;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  h1, h2, h3 {
+    text-wrap: balance;
   }
 
   button, textarea, input {
@@ -20,6 +30,44 @@
   button:focus-visible, textarea:focus-visible, input:focus-visible {
     outline: 3px solid rgba(251, 191, 36, 0.65);
     outline-offset: 3px;
+  }
+}
+
+:root {
+  --font-display: 'Estedad', 'Vazirmatn', sans-serif;
+}
+
+.display-type {
+  font-family: var(--font-display);
+}
+
+.chapter-journey {
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 50% 8%, var(--chapter-glow), transparent 24rem),
+    linear-gradient(180deg, transparent, var(--chapter-surface) 48%, transparent 96%);
+  transition: background 600ms ease;
+}
+
+.chapter-journey::before {
+  content: '';
+  position: absolute;
+  inset: 8rem 0 auto;
+  height: 20rem;
+  z-index: -1;
+  pointer-events: none;
+  opacity: .45;
+  background-image: radial-gradient(var(--chapter-accent) .7px, transparent .7px);
+  background-size: 20px 20px;
+  mask-image: linear-gradient(to bottom, transparent, #000 25%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
   }
 }
 

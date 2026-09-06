@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { ChapterData, UserProgress } from '../types';
 import { soundEngine } from '../utils/audio';
+import { getChapterTheme } from '../utils/chapterTheme';
 
 import { BrokenCompassVisual } from './cinematics/BrokenCompassVisual';
 import { CrossroadsVisual } from './cinematics/CrossroadsVisual';
@@ -39,6 +40,7 @@ export const MobileCinematicVisual: React.FC<MobileCinematicVisualProps> = ({
   progress,
   onUpdateProgress,
 }) => {
+  const theme = getChapterTheme(chapter.id);
   // CHAPTER 1 LOCAL STATES
   const [ch1LightIntensity, setCh1LightIntensity] = useState<number>(0.3);
 
@@ -101,10 +103,13 @@ export const MobileCinematicVisual: React.FC<MobileCinematicVisualProps> = ({
   return (
     <div className="w-full relative my-6 select-none">
       {/* Visual Frame Container */}
-      <div className="relative w-full rounded-3xl overflow-hidden bg-gradient-to-b from-[#060a17] via-[#091124] to-[#050811] border border-amber-500/20 shadow-[0_10px_35px_rgba(0,0,0,0.7)] p-4 sm:p-6 min-h-[340px] flex flex-col items-center justify-center text-center">
+      <div
+        className="relative w-full rounded-[30px] overflow-hidden border shadow-[0_18px_50px_rgba(0,0,0,0.65)] p-4 sm:p-6 min-h-[340px] flex flex-col items-center justify-center text-center"
+        style={{ borderColor: `${theme.accent}45`, background: `linear-gradient(180deg, ${theme.surface}, #091124 45%, #050811)` }}
+      >
         
         {/* Subtle Ambient Radial Glow */}
-        <div className="absolute inset-0 bg-radial from-amber-500/[0.08] via-transparent to-transparent pointer-events-none" />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(circle at 50% 12%, ${theme.glow}, transparent 48%)` }} />
 
         {/* ---------------------------------------------------- */}
         {/* CHAPTER 1 VISUAL: شروع سفر - تاریکی تا راه نورانی     */}
