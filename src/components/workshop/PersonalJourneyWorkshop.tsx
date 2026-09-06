@@ -3,7 +3,8 @@ import { AnimatePresence, motion } from 'motion/react';
 import { ArrowLeft, ArrowRight, Check, CheckCircle2, ChevronDown, Circle, Compass, LockKeyhole, RotateCcw } from 'lucide-react';
 import { UserProgress } from '../../types';
 import { PDF_WORKSHOP_EXERCISES } from '../../data/pdfWorkshopExercises';
-import { FlatStoryIllustration } from '../FlatStoryIllustration';
+import { getEditorialImageSrc } from '../FlatStoryIllustration';
+import { CinematicReveal } from '../CinematicReveal';
 
 interface Props {
   progress: UserProgress;
@@ -20,6 +21,15 @@ const prompts: Record<number, string[]> = {
   5: ['بهای واقعی', 'آن‌قدر کوچک که انجام شود'],
   6: ['کوتاه و منظم', 'مسیر را اصلاح کن'],
 };
+
+const workshopResults = [
+  'وقتی ناخواسته‌ها نام می‌گیرند، انرژیِ فرار به جهتِ حرکت تبدیل می‌شود.',
+  'ارزش‌ها ستون‌هایی هستند که هدف را در روزهای سخت سرپا نگه می‌دارند.',
+  'رؤیای آزاد، مادهٔ خامی است که بعداً به یک هدف واقعی تبدیل می‌کنی.',
+  'هدف دقیق از مه بیرون می‌آید؛ دیده می‌شود، سنجیده می‌شود و زمان دارد.',
+  'تعهد یعنی هم مقصد را بخواهی و هم بهای مسیر را آگاهانه بپذیری.',
+  'بازبینی، شکست را از بن‌بست به یک اصلاح مسیر تبدیل می‌کند.',
+];
 
 const answerKey = (step: number, field: number) => 100 + step * 10 + field;
 
@@ -78,7 +88,19 @@ export const PersonalJourneyWorkshop: React.FC<Props> = ({ progress, onUpdatePro
         </div>
 
         <section className="overflow-hidden rounded-[30px] border border-amber-500/25 bg-slate-950/90">
-          <FlatStoryIllustration chapterId={13} index={0} hero className="aspect-[3/2] rounded-none border-0 border-b border-slate-200" />
+          <CinematicReveal
+            beforeSrc={getEditorialImageSrc(11, 0)}
+            afterSrc={getEditorialImageSrc(13, 0)}
+            beforeAlt="بار ناخواسته‌های گذشته"
+            afterAlt="ساختن مسیر هدف شخصی"
+            eyebrow="کارگاه شخصی تو"
+            title="بار را زمین بگذار؛ مسیر را بساز"
+            instruction="تصویر را لمس کن تا شش ایستگاه مسیر آشکار شود."
+            result="از چیزی که نمی‌خواهی شروع کن و قدم‌به‌قدم به اقدام امروز برس."
+            accent="#fbbf24"
+            compact
+            className="rounded-none border-0 border-b border-white/10"
+          />
           <div className="p-5">
             <div className="flex items-center justify-between">
               <span className="text-xs font-black text-amber-400">از ناخواسته تا اقدام روزانه</span>
@@ -121,7 +143,20 @@ export const PersonalJourneyWorkshop: React.FC<Props> = ({ progress, onUpdatePro
         </div>
 
         <section className="overflow-hidden rounded-[28px] border border-slate-800 bg-slate-950/92 shadow-xl">
-          <FlatStoryIllustration chapterId={chapterForStep[step - 1]} index={field} hero className="aspect-[3/2] rounded-none border-0 border-b border-slate-200" />
+          <CinematicReveal
+            key={`workshop-scene-${step}-${field}`}
+            beforeSrc={getEditorialImageSrc(chapterForStep[step - 1], field)}
+            afterSrc={getEditorialImageSrc(chapterForStep[step - 1], field + 1)}
+            beforeAlt={`${exercise.title}؛ پیش از پاسخ`}
+            afterAlt={`${exercise.title}؛ پس از روشن شدن مسیر`}
+            eyebrow={`ایستگاه ${step} از ۶`}
+            title={exercise.cinematicHeadline}
+            instruction="تصویر را لمس کن؛ بعد پاسخ واقعی خودت را بنویس."
+            result={workshopResults[step - 1]}
+            accent="#fbbf24"
+            compact
+            className="rounded-none border-0 border-b border-white/10"
+          />
           <div className="p-4">
             <div className="flex items-center justify-between text-[10px]"><span className="font-black text-amber-400">پرسش {currentNumber} از {exercise.fields.length}</span><span className="text-slate-500">{Math.round(fieldProgress)}٪ این گام</span></div>
             <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-800"><motion.div initial={{ width: 0 }} animate={{ width: `${fieldProgress}%` }} className="h-full rounded-full bg-amber-400" /></div>
