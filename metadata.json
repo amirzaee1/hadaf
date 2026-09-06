@@ -1,0 +1,6 @@
+{
+  "name": "GOAL DREAM",
+  "description": "کارگاه تعاملی و سینمایی هدف‌گذاری، کشف رسالت فردی و مهندسی رویا به واقعیت",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
