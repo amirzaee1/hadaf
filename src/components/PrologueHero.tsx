@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { ArrowDown, Compass, Sparkles } from 'lucide-react';
-import { FlatStoryIllustration } from './FlatStoryIllustration';
+import { CinematicReveal } from './CinematicReveal';
+import { getEditorialImageSrc } from './FlatStoryIllustration';
 
 interface PrologueHeroProps { onStartJourney: () => void; }
 
@@ -16,7 +17,17 @@ export const PrologueHero: React.FC<PrologueHeroProps> = ({ onStartJourney }) =>
     </motion.h1>
     <p className="mt-2 text-[15px] font-bold text-slate-300">از هدف قرضی تا مسیر واقعی خودت</p>
     <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .15 }} className="mt-7 w-full">
-      <FlatStoryIllustration chapterId={1} special="prologue" hero className="aspect-[3/2] w-full shadow-2xl" />
+      <CinematicReveal
+        beforeSrc={getEditorialImageSrc(1, 0, 'prologue')}
+        afterSrc={getEditorialImageSrc(1, 1)}
+        beforeAlt="ایستادن میان مسیرهای قرضی"
+        afterAlt="انتخاب مسیر شخصی و روشن"
+        eyebrow="پیش‌درآمد"
+        title="از جمع جدا شو؛ نه از زندگی"
+        instruction="تصویر را لمس کن تا مسیر واقعی خودت روشن شود."
+        result="این سفر برای پیدا کردن یک هدف تازه نیست؛ برای ساختن هدف خود توست."
+        accent="#fbbf24"
+      />
     </motion.div>
     <p className="mx-auto mt-6 max-w-[330px] text-[13px] leading-7 text-slate-400">
       هر مرحله را بخوان، یک پاسخ واقعی بنویس و فقط وقتی آماده‌ای قدم بعدی را باز کن.
