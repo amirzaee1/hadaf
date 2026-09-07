@@ -2,7 +2,6 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { ArrowDown, Compass, Sparkles } from 'lucide-react';
 import { CinematicReveal } from './CinematicReveal';
-import { getEditorialImageSrc } from './FlatStoryIllustration';
 
 interface PrologueHeroProps {
   onStartJourney: () => void;
@@ -22,8 +21,8 @@ export const PrologueHero: React.FC<PrologueHeroProps> = ({ onStartJourney, resu
     <p className="mt-2 text-[15px] font-bold text-slate-300">از هدف قرضی تا مسیر واقعی خودت</p>
     <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .15 }} className="mt-7 w-full">
       <CinematicReveal
-        beforeSrc={getEditorialImageSrc(1, 0, 'prologue')}
-        afterSrc={getEditorialImageSrc(1, 1)}
+        beforeSrc="./assets/goal-dream/hero-isometric.webp"
+        afterSrc="./assets/goal-dream/journey-isometric.webp"
         beforeAlt="ایستادن میان مسیرهای قرضی"
         afterAlt="انتخاب مسیر شخصی و روشن"
         eyebrow="پیش‌درآمد"

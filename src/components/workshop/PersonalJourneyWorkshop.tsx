@@ -1,9 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { ArrowLeft, ArrowRight, Check, CheckCircle2, ChevronDown, Circle, Compass, LockKeyhole, RotateCcw } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, CheckCircle2, ChevronDown, Circle, Compass, LockKeyhole, Plus, RotateCcw } from 'lucide-react';
 import { UserProgress } from '../../types';
 import { PDF_WORKSHOP_EXERCISES } from '../../data/pdfWorkshopExercises';
-import { getEditorialImageSrc } from '../FlatStoryIllustration';
 import { CinematicReveal } from '../CinematicReveal';
 
 interface Props {
@@ -12,7 +11,30 @@ interface Props {
   onBackToJourney: () => void;
 }
 
-const chapterForStep = [11, 10, 8, 12, 13, 5];
+type DisgustGoalRow = NonNullable<UserProgress['backpackStones']>[number];
+
+const normalizeDisgustRows = (rows: UserProgress['backpackStones']): DisgustGoalRow[] => {
+  const normalized = (rows || []).map((row, index) => ({
+    ...row,
+    id: row.id || `disgust-row-${index + 1}`,
+  }));
+  while (normalized.length < 4) {
+    normalized.push({
+      id: `disgust-row-${normalized.length + 1}`,
+      unwanted: '',
+      transformed: '',
+      isTransformed: false,
+    });
+  }
+  return normalized;
+};
+
+const summarizeDisgustRows = (rows: DisgustGoalRow[]) => rows
+  .filter((row) => row.unwanted.trim() || row.transformed.trim())
+  .map((row) => `نمی‌خواهم: ${row.unwanted.trim()} ← هدف: ${row.transformed.trim()}`)
+  .join('\n');
+
+const workshopImageSrc = (step: number) => `./assets/goal-dream/workshop/step-${String(step).padStart(2, '0')}.webp`;
 const prompts: Record<number, string[]> = {
   1: ['بدون سانسور بنویس', 'از حس واقعی شروع کن'],
   2: ['فقط سه ارزش', 'برای هرکدام شاهد واقعی'],
@@ -39,6 +61,7 @@ export const PersonalJourneyWorkshop: React.FC<Props> = ({ progress, onUpdatePro
   const completed = progress.workshopCompletedSteps || [];
   const exercise = step ? PDF_WORKSHOP_EXERCISES[step - 1] : null;
   const answer = exercise ? progress.reflections[answerKey(exercise.id, field)] || '' : '';
+  const disgustRows = useMemo(() => normalizeDisgustRows(progress.backpackStones), [progress.backpackStones]);
 
   const totalFields = useMemo(() => PDF_WORKSHOP_EXERCISES.reduce((sum, item) => sum + item.fields.length, 0), []);
   const answeredFields = useMemo(() => PDF_WORKSHOP_EXERCISES.reduce((sum, item) => sum + item.fields.filter((_, index) => (progress.reflections[answerKey(item.id, index)] || '').trim()).length, 0), [progress.reflections]);
@@ -59,8 +82,34 @@ export const PersonalJourneyWorkshop: React.FC<Props> = ({ progress, onUpdatePro
     onUpdateProgress((prev) => ({ ...prev, reflections: { ...prev.reflections, [answerKey(exercise.id, field)]: value } }));
   };
 
+  const saveDisgustRows = (rows: DisgustGoalRow[]) => {
+    onUpdateProgress((prev) => ({
+      ...prev,
+      backpackStones: rows,
+      transformedFuel: rows.some((row) => row.transformed.trim()),
+      reflections: {
+        ...prev.reflections,
+        [answerKey(1, 0)]: summarizeDisgustRows(rows),
+      },
+    }));
+  };
+
+  const updateDisgustRow = (index: number, key: 'unwanted' | 'transformed', value: string) => {
+    const updated = disgustRows.map((row, rowIndex) => rowIndex === index
+      ? { ...row, [key]: value, isTransformed: key === 'transformed' ? Boolean(value.trim()) : row.isTransformed }
+      : row);
+    saveDisgustRows(updated);
+  };
+
+  const addDisgustRow = () => {
+    saveDisgustRows([
+      ...disgustRows,
+      { id: `disgust-row-${Date.now()}`, unwanted: '', transformed: '', isTransformed: false },
+    ]);
+  };
+
   const advance = () => {
-    if (!exercise || !answer.trim()) return;
+    if (!exercise) return;
     if (field < exercise.fields.length - 1) {
       setField((value) => value + 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -89,8 +138,8 @@ export const PersonalJourneyWorkshop: React.FC<Props> = ({ progress, onUpdatePro
 
         <section className="overflow-hidden rounded-[30px] border border-amber-500/25 bg-slate-950/90">
           <CinematicReveal
-            beforeSrc={getEditorialImageSrc(11, 0)}
-            afterSrc={getEditorialImageSrc(13, 0)}
+            beforeSrc="./assets/goal-dream/workshop-isometric.webp"
+            afterSrc="./assets/goal-dream/workshop-isometric.webp"
             beforeAlt="بار ناخواسته‌های گذشته"
             afterAlt="ساختن مسیر هدف شخصی"
             eyebrow="کارگاه شخصی تو"
@@ -99,6 +148,7 @@ export const PersonalJourneyWorkshop: React.FC<Props> = ({ progress, onUpdatePro
             result="از چیزی که نمی‌خواهی شروع کن و قدم‌به‌قدم به اقدام امروز برس."
             accent="#fbbf24"
             compact
+            singleScene
             className="rounded-none border-0 border-b border-white/10"
           />
           <div className="p-5">
@@ -143,20 +193,23 @@ export const PersonalJourneyWorkshop: React.FC<Props> = ({ progress, onUpdatePro
         </div>
 
         <section className="overflow-hidden rounded-[28px] border border-slate-800 bg-slate-950/92 shadow-xl">
-          <CinematicReveal
-            key={`workshop-scene-${step}-${field}`}
-            beforeSrc={getEditorialImageSrc(chapterForStep[step - 1], field)}
-            afterSrc={getEditorialImageSrc(chapterForStep[step - 1], field + 1)}
-            beforeAlt={`${exercise.title}؛ پیش از پاسخ`}
-            afterAlt={`${exercise.title}؛ پس از روشن شدن مسیر`}
-            eyebrow={`ایستگاه ${step} از ۶`}
-            title={exercise.cinematicHeadline}
-            instruction="تصویر را لمس کن؛ بعد پاسخ واقعی خودت را بنویس."
-            result={workshopResults[step - 1]}
-            accent="#fbbf24"
-            compact
-            className="rounded-none border-0 border-b border-white/10"
-          />
+          {field === 0 && (
+            <CinematicReveal
+              key={`workshop-scene-${step}`}
+              beforeSrc={workshopImageSrc(step)}
+              afterSrc={workshopImageSrc(step)}
+              beforeAlt={`${exercise.title}؛ پیش از روشن شدن مسیر`}
+              afterAlt={`${exercise.title}؛ پس از روشن شدن مسیر`}
+              eyebrow={`ایستگاه ${step} از ۶`}
+              title={exercise.cinematicHeadline}
+              instruction="تصویر را لمس کن؛ بعد پاسخ واقعی خودت را بنویس."
+              result={workshopResults[step - 1]}
+              accent="#fbbf24"
+              compact
+              singleScene
+              className="rounded-none border-0 border-b border-white/10"
+            />
+          )}
           <div className="p-4">
             <div className="flex items-center justify-between text-[10px]"><span className="font-black text-amber-400">پرسش {currentNumber} از {exercise.fields.length}</span><span className="text-slate-500">{Math.round(fieldProgress)}٪ این گام</span></div>
             <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-800"><motion.div initial={{ width: 0 }} animate={{ width: `${fieldProgress}%` }} className="h-full rounded-full bg-amber-400" /></div>
@@ -167,11 +220,51 @@ export const PersonalJourneyWorkshop: React.FC<Props> = ({ progress, onUpdatePro
 
         <section className="rounded-[28px] border border-amber-500/25 bg-gradient-to-b from-amber-500/8 to-slate-950 p-4">
           <div className="mb-3 flex flex-wrap gap-2">{prompts[step].map((tip) => <span key={tip} className="rounded-full border border-amber-500/20 bg-amber-500/10 px-2.5 py-1 text-[10px] font-bold text-amber-200">{tip}</span>)}</div>
-          <label htmlFor="workshop-answer" className="block text-[15px] font-black leading-7 text-white">{exercise.fields[field]}</label>
-          <textarea id="workshop-answer" autoFocus value={answer} onChange={(event) => setAnswer(event.target.value)} rows={7} placeholder="پاسخ خودت را اینجا بنویس…" className="mt-3 w-full resize-none rounded-2xl border border-slate-700 bg-slate-900/85 p-4 text-[15px] leading-8 text-white outline-none placeholder:text-slate-600 focus:border-amber-400" />
+          <label htmlFor={step === 1 && field === 0 ? undefined : 'workshop-answer'} className="block text-[15px] font-black leading-7 text-white">{exercise.fields[field]}</label>
+
+          {step === 1 && field === 0 ? (
+            <div className="mt-4 overflow-hidden rounded-2xl border border-white/10 bg-slate-950/80">
+              <div className="grid grid-cols-[1fr_30px_1fr] items-center border-b border-white/10 bg-white/[.04] px-2 py-2.5 text-center text-[11px] font-black">
+                <span className="text-rose-300">نمی‌خواهم</span>
+                <span className="text-slate-600">←</span>
+                <span className="text-amber-300">تبدیل به هدف</span>
+              </div>
+
+              <div className="divide-y divide-white/[.07]">
+                {disgustRows.map((row, index) => (
+                  <div key={row.id} className="grid grid-cols-[1fr_30px_1fr] items-stretch gap-1.5 p-2">
+                    <textarea
+                      value={row.unwanted}
+                      onChange={(event) => updateDisgustRow(index, 'unwanted', event.target.value)}
+                      rows={3}
+                      aria-label={`نمی‌خواهم ${index + 1}`}
+                      placeholder={`نمی‌خواهم ${index + 1}`}
+                      className="min-w-0 resize-none rounded-xl border border-rose-500/25 bg-rose-950/15 px-2.5 py-2 text-[12px] leading-5 text-slate-100 outline-none placeholder:text-rose-300/35 focus:border-rose-400"
+                    />
+                    <span className="flex items-center justify-center text-lg text-amber-400/70">←</span>
+                    <textarea
+                      value={row.transformed}
+                      onChange={(event) => updateDisgustRow(index, 'transformed', event.target.value)}
+                      rows={3}
+                      aria-label={`هدف ${index + 1}`}
+                      placeholder={`هدف روشن ${index + 1}`}
+                      className="min-w-0 resize-none rounded-xl border border-amber-400/25 bg-amber-500/[.06] px-2.5 py-2 text-[12px] leading-5 text-slate-100 outline-none placeholder:text-amber-300/35 focus:border-amber-300"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <button type="button" onClick={addDisgustRow} className="flex min-h-11 w-full items-center justify-center gap-2 border-t border-amber-500/20 bg-amber-500/[.08] text-xs font-black text-amber-300 transition hover:bg-amber-500/[.14]">
+                <Plus className="h-4 w-4" />
+                <span>افزودن یک ردیف دیگر</span>
+              </button>
+            </div>
+          ) : (
+            <textarea id="workshop-answer" autoFocus value={answer} onChange={(event) => setAnswer(event.target.value)} rows={7} placeholder="پاسخ خودت را اینجا بنویس…" className="mt-3 w-full resize-none rounded-2xl border border-slate-700 bg-slate-900/85 p-4 text-[15px] leading-8 text-white outline-none placeholder:text-slate-600 focus:border-amber-400" />
+          )}
           <div className="mt-3 flex gap-2">
             {field > 0 && <button onClick={() => setField((value) => value - 1)} className="flex min-h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-slate-700 bg-slate-900 text-slate-300" aria-label="پرسش قبل"><ArrowRight className="h-4 w-4" /></button>}
-            <button onClick={advance} disabled={!answer.trim()} className={`flex min-h-12 flex-1 items-center justify-center gap-2 rounded-2xl text-sm font-black ${answer.trim() ? 'bg-gradient-to-l from-amber-300 to-orange-500 text-slate-950' : 'cursor-not-allowed bg-slate-800 text-slate-600'}`}>{field === exercise.fields.length - 1 ? <CheckCircle2 className="h-4 w-4" /> : <ArrowLeft className="h-4 w-4" />}<span>{field === exercise.fields.length - 1 ? `تکمیل گام ${step}` : 'ثبت و پرسش بعدی'}</span></button>
+            <button onClick={advance} className="flex min-h-12 flex-1 items-center justify-center gap-2 rounded-2xl bg-gradient-to-l from-amber-300 to-orange-500 text-sm font-black text-slate-950">{field === exercise.fields.length - 1 ? <CheckCircle2 className="h-4 w-4" /> : <ArrowLeft className="h-4 w-4" />}<span>{field === exercise.fields.length - 1 ? `تکمیل گام ${step}` : answer.trim() || (step === 1 && field === 0 && summarizeDisgustRows(disgustRows)) ? 'ثبت و پرسش بعدی' : 'ادامه بدون پاسخ'}</span></button>
           </div>
         </section>
 

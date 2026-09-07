@@ -13,6 +13,7 @@ interface CinematicRevealProps {
   result: string;
   accent?: string;
   compact?: boolean;
+  singleScene?: boolean;
   className?: string;
 }
 
@@ -27,6 +28,7 @@ export const CinematicReveal: React.FC<CinematicRevealProps> = ({
   result,
   accent = '#fbbf24',
   compact = false,
+  singleScene = false,
   className = '',
 }) => {
   const [revealed, setRevealed] = useState(false);
@@ -55,7 +57,10 @@ export const CinematicReveal: React.FC<CinematicRevealProps> = ({
             height="640"
             decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
-            animate={{ scale: revealed ? 1.035 : 1 }}
+            animate={{
+              scale: revealed ? 1.035 : 1,
+              filter: singleScene && !revealed ? 'grayscale(.78) saturate(.48) brightness(.48)' : 'grayscale(0) saturate(1) brightness(1)',
+            }}
             transition={{ duration: 1.15, ease: [0.22, 1, 0.36, 1] }}
           />
 
